@@ -1,0 +1,24 @@
+{
+  "author": "Fabrice Guyot-Sionnest",
+  "name": "bears-at-work",
+  "description": "Webpage for the Bears at Work site",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "~4.0.0"
+  },
+  "devDependencies": {
+  },
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabriceGS/BearsatWork.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FabriceGS/BearsatWork/issues"
+  },
+  "homepage": "https://github.com/FabriceGS/BearsatWork#readme"
+}
