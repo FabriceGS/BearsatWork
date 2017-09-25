@@ -4,4 +4,5 @@ myoutput.txt
 myoutput
 public/.DS_Store
 .env
-BearsatWork-e9d991ff9b65.json
+client_secret.json
+token.json

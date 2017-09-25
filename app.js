@@ -1,6 +1,5 @@
 const express = require('express'); // Express web server framework
 const bodyParser = require("body-parser");
-var GoogleSheets = require('google-drive-sheets');
 var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
@@ -15,9 +14,6 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-// spreadsheet key is the long id in the sheets URL 
-var mySheet = new GoogleSheets(process.env.GOOGLE_SHEETS_ID);
-
 app.get('/', (req, res) => {
     res.redirect('index.html');
 });
@@ -31,14 +27,6 @@ app.get('/getstarted', (req, res) => {
 });
 
 app.post('/namepost', (req, res) => {
-    console.log(req.body.firstname);
-    console.log(req.body.email);
-    console.log(req.body.numcourses);
-    console.log(req.body.year);
-    console.log(req.body.spring);
-    console.log(req.body.summer);
-    console.log(req.body.fall);
-    
     var values = [
 	  [req.body.firstname,
 	    req.body.email,
@@ -78,16 +66,21 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart.json';
 
-// Load client secrets from a local file.
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
-  if (err) {
-    console.log('Error loading client secret file: ' + err);
-    return;
+// Load client secrets from process.env
+var content = {
+  "installed": {
+    "client_id" : process.env.CLIENT_ID,
+    "project_id" : process.env.PROJECT_ID,
+    "auth_uri" : process.env.AUTH_URI,
+    "token_uri" : process.env.TOKEN_URI,
+    "auth_provider_x509_cert_url" : process.env.AUTH_PROVIDER_X509_CERT_URL,
+    "client_secret" : process.env.CLIENT_SECRET,
+    "redirect_uris" : [process.env.REDIRECT_URI_1,process.env.REDIRECT_URI_2]
   }
-  // Authorize a client with the loaded credentials, then call the
-  // Google Sheets API.
-  authorize(JSON.parse(content), setOauth2Client);
-});
+}
+// Authorize a client with the loaded credentials, then call the
+// Google Sheets API.
+authorize(content, setOauth2Client);
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -104,14 +97,17 @@ function authorize(credentials, callback) {
   var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
 
   // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, function(err, token) {
-    if (err) {
-      getNewToken(oauth2Client, callback);
-    } else {
-      oauth2Client.credentials = JSON.parse(token);
-      callback(oauth2Client);
-    }
-  });
+  if (process.env.ACCESS_TOKEN) {
+    oauth2Client.credentials = {
+	  "access_token":process.env.ACCESS_TOKEN,
+	  "refresh_token":process.env.REFRESH_TOKEN,
+	  "token_type":"Bearer",
+	  "expiry_date":process.env.EXPIRY_DATE
+	}
+    callback(oauth2Client);
+  } else {
+  	getNewToken(oauth2Client, callback);
+  }
 }
 
 /**
@@ -169,9 +165,8 @@ function setOauth2Client(client) {
 
 
 
-/**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+/*
+ * Updates the spreadsheet with the given information
  */
 function updateSheet(auth, body) {
   var sheets = google.sheets('v4');
