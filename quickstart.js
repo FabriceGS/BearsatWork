@@ -1,75 +1,7 @@
-const express = require('express'); // Express web server framework
-const bodyParser = require("body-parser");
-var GoogleSheets = require('google-drive-sheets');
 var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-require('dotenv').config();
-const app = express();
-let myOauth2Client = null;
-let count = 2;
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
-app.use(express.static('public'));
-
-// spreadsheet key is the long id in the sheets URL 
-var mySheet = new GoogleSheets(process.env.GOOGLE_SHEETS_ID);
-
-app.get('/', (req, res) => {
-    res.redirect('index.html');
-});
-
-app.get('/login', (req, res) => {
-    res.send('fdsa');
-});
-
-app.get('/getstarted', (req, res) => {
-    res.redirect('getstarted.html');
-});
-
-app.post('/namepost', (req, res) => {
-    console.log(req.body.firstname);
-    console.log(req.body.email);
-    console.log(req.body.numcourses);
-    console.log(req.body.year);
-    console.log(req.body.spring);
-    console.log(req.body.summer);
-    console.log(req.body.fall);
-    
-    var values = [
-	  [req.body.firstname,
-	    req.body.email,
-	    req.body.numcourses,
-	    req.body.year,
-	    req.body.spring,
-	    req.body.summer,
-	    req.body.fall]
-	];
-	var body = {
-	  values: values
-	};
-	updateSheet(myOauth2Client, body);
-    // var body = '';
-    // filePath = "/Users/brownloaner/Documents/bearsatwork/myoutput.txt";
-    // request.on('myoutput', function(myoutput) {
-    //     body += myoutput;
-    // });
-    // request.on('end', function (){
-    //     fs.appendFile(filePath, body, function() {
-    //         respond.end();
-    //     });
-    // });
-    // send to google sheets
-    //redirect back to home page
-    res.redirect('/index.html');
-});
-
-// app.post('/myaction', function(req, res) {
-//   res.send('You sent the name "' + req.body.name + '".');
-// });
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/sheets.googleapis.com-nodejs-quickstart.json
@@ -86,7 +18,7 @@ fs.readFile('client_secret.json', function processClientSecrets(err, content) {
   }
   // Authorize a client with the loaded credentials, then call the
   // Google Sheets API.
-  authorize(JSON.parse(content), setOauth2Client);
+  authorize(JSON.parse(content), listMajors);
 });
 
 /**
@@ -163,23 +95,24 @@ function storeToken(token) {
   console.log('Token stored to ' + TOKEN_PATH);
 }
 
-function setOauth2Client(client) {
-	myOauth2Client = client;
-}
-
-
+var values = [
+  ['node1', 'node2', 'node3', 'node4', 'node5']
+];
+var body = {
+  values: values
+};
 
 /**
  * Print the names and majors of students in a sample spreadsheet:
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
-function updateSheet(auth, body) {
+function listMajors(auth) {
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.update({
     auth: auth,
     spreadsheetId: '1MT5iZe25U08POpEJqpmOLCZHi1K7qbgPnytSyAqi3Mw',
     valueInputOption: 'RAW',
-    range: 'A' + count + ':G' + count,
+    range: 'A2:E2',
     resource: body,
   }, function(err, response) {
     if (err) {
@@ -198,10 +131,4 @@ function updateSheet(auth, body) {
     //   }
     // }
   });
-  count++;
 }
-
-
-console.log('Listening on 8888');
-app.listen(8888);
-  

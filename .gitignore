@@ -1,1 +1,7 @@
 node_modules
+.DS_Store
+myoutput.txt
+myoutput
+public/.DS_Store
+.env
+BearsatWork-e9d991ff9b65.json

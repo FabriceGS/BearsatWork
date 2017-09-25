@@ -13,8 +13,24 @@
 
     <body>
         <form action="/namepost" method="post">
-            What's your name?</br>
-            <input type="text" name="firstname"><br>
+            <!--What's your name?</br>-->
+            <label for="name">Enter name: </label>
+            <input id="name" type="text" name="firstname"><br>
+
+            <label for="email">Brown email: </label>
+            <input id="email" type="text" name="email"><br>
+
+            <label for="numcourses">Approximate number of Brown CS courses taken by the end of this semester: </label>
+            <input id="numcourses" type="text" name="numcourses"><br>
+
+            <label for="year">Class year: </label>
+            <input id="year" type="text" name="year"><br>
+
+            <label for="availability">Interested in working: </label>
+            <input type="checkbox" name="spring" value="spring"> Spring semester '18<br>
+            <input type="checkbox" name="summer" value="summer"> Summer '18<br>
+            <input type="checkbox" name="fall" value="fall"> Fall semester '18<br>
+
             <input type="submit" value="Submit">
         </form>
     </body>

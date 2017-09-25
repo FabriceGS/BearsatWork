@@ -96,6 +96,20 @@ body{
 }
 
 
+/*ABOUT CONTENT------------------------------*/
+
+.about_content{
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  /*text-align: center;*/
+}
+
+.main_text{
+  text-align: center;
+}
+
+
 
 /*-----------------------------------------------------------*/
 
