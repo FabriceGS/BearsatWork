@@ -4,6 +4,10 @@
   font-family: Arial black;
 }
 
+.red{
+  color: #cf0004;
+}
+
 /*HEADER------------------------*/
 #nav_container{
   display: flex;
@@ -103,18 +107,22 @@ body{
   display: block;
   margin: auto;
   flex-direction: row;
-  text-align: center;*/
+  text-align: center;
 }
 
-/*.main_text{
+.main_text{
   text-align: center;
 }
 
 .main_list{
-  /*text-align: center;
-}*/
+  padding-top: 10px;
+  text-align: center;
+  font-style: italic;
+}
 
-
+.list_item{
+  list-style-type: none;
+}
 
 /*-----------------------------------------------------------*/
 
