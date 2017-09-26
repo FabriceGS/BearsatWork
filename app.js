@@ -52,7 +52,7 @@ app.post('/namepost', (req, res) => {
     // });
     // send to google sheets
     //redirect back to home page
-    res.redirect('/index.html');
+    res.redirect('/success.html');
 });
 
 // app.post('/myaction', function(req, res) {

@@ -126,6 +126,16 @@ body{
 
 /*-----------------------------------------------------------*/
 
+/*SUCCESS CONTENT----------------------------*/
+.success_content{
+  padding-top: 75px;
+  display: block;
+  margin: auto;
+  flex-direction: row;
+  text-align: center;
+}
+
+/*-----------------------------------------------------------*/
 
 *, *:before, *:after {
   -moz-box-sizing: border-box;
