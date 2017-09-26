@@ -7,6 +7,7 @@ require('dotenv').config();
 const app = express();
 let myOauth2Client = null;
 let count = 2;
+const PORT = process.env.PORT || 8888;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -178,6 +179,6 @@ function updateSheet(auth, body) {
 }
 
 
-console.log('Listening on 8888');
-app.listen(8888);
+console.log('Listening on ' + PORT);
+app.listen(PORT);
   
